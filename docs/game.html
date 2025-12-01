@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8" />
+    <title>股票分析桌遊 - Web 版</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="app">
+    <header class="app-header">
+        <div class="title-row">
+            <div>
+                <h1>股票分析桌遊（Web 版）</h1>
+                <p class="subtitle">教學用桌遊｜模擬市場事件與槓桿風險，不連接真實金融資料</p>
+            </div>
+            <div class="header-badge">
+                <span class="badge-pill">Fin-Ed Game Prototype</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="layout">
+        <!-- 左邊：棋盤 -->
+        <section class="board-panel card">
+            <div class="panel-header">
+                <h2 class="panel-title">棋盤</h2>
+                <span class="panel-sub">從「準備出發」開始，繞行市場一圈</span>
+            </div>
+            <div id="board" class="board-ring">
+                <!-- JS 會自動塞 36 格 -->
+            </div>
+        </section>
+
+        <!-- 右邊：控制＋事件＋教學 -->
+        <section class="right-panel">
+            <!-- 控制區 -->
+            <div class="card controls-card">
+                <div class="panel-header">
+                    <h2 class="panel-title">控制區</h2>
+                    <span class="panel-sub">先設定玩家，再開始遊戲與丟骰子</span>
+                </div>
+
+                <div class="controls-row">
+                    <button id="btnSetPlayers" class="btn ghost">
+                        👥 設定玩家人數
+                    </button>
+                    <button id="btnStart" class="btn primary">
+                        🚀 開始玩
+                    </button>
+                    <button id="btnReset" class="btn subtle">
+                        🔄 重新玩
+                    </button>
+                </div>
+
+                <div class="controls-row">
+                    <button id="btnRoll" class="btn accent">
+                        🎲 丟骰子
+                    </button>
+                    <button id="btnReveal" class="btn outline">
+                        📢 公布（槓桿後）
+                    </button>
+                </div>
+
+                <div class="lever-row">
+                    <label for="leverageInput">槓桿（-3 ~ 9，空白=1）：</label>
+                    <input id="leverageInput" type="number" step="1" />
+                </div>
+
+                <!-- 動畫＋音效開關 -->
+                <div class="lever-row toggles-row">
+                    <label class="toggle">
+                        <input type="checkbox" id="diceAnimationToggle" checked />
+                        <span>全螢幕 3D 骰子動畫</span>
+                    </label>
+                    <label class="toggle">
+                        <input type="checkbox" id="diceSoundToggle" checked />
+                        <span>骰子音效</span>
+                    </label>
+                </div>
+
+                <!-- 小骰子數字顯示 -->
+                <div class="dice-row">
+                    <span class="dice-label">當前點數：</span>
+                    <div id="diceBox" class="dice-box">-</div>
+                </div>
+            </div>
+
+            <!-- 事件與教學 -->
+            <div class="card event-card">
+                <div class="panel-header">
+                    <h2 class="panel-title">事件與影響</h2>
+                    <span class="panel-sub">顯示當前格子觸發的市場情境與學習重點</span>
+                </div>
+                <div class="event-card-body">
+                    <div class="event-row">
+                        <div class="event-label">事件：</div>
+                        <div id="eventText" class="event-text"></div>
+                    </div>
+                    <div class="event-row">
+                        <div class="event-label">影響值：</div>
+                        <div id="impactValue" class="event-impact"></div>
+                    </div>
+                    <div class="teach-block">
+                        <div><strong>教學重點：</strong><span id="teachLearn"></span></div>
+                        <div><strong>投資建議：</strong><span id="teachAdvice"></span></div>
+                        <div><strong>投資人類型：</strong><span id="teachType"></span></div>
+                        <div><strong>教學面向：</strong><span id="teachFace"></span></div>
+                        <div><strong>理財心法：</strong><span id="teachMind"></span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 系統訊息 -->
+            <div class="card info-card">
+                <div class="panel-header">
+                    <h2 class="panel-title">系統訊息</h2>
+                </div>
+                <div id="infoText" class="info-text"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 下方：玩家狀態表 -->
+    <section class="players-panel card">
+        <div class="panel-header">
+            <h2 class="panel-title">玩家狀態</h2>
+            <span class="panel-sub">追蹤每位玩家的現金、槓桿與績效</span>
+        </div>
+        <div class="players-table-wrap">
+            <table id="playersTable">
+                <thead>
+                <tr>
+                    <th>玩家</th>
+                    <th>符號</th>
+                    <th>槓桿累計</th>
+                    <th>現金</th>
+                    <th>狀態</th>
+                    <th>績效</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- 由 JS 動態填入 -->
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
+
+<!-- 🎲 全螢幕 3D 骰子動畫 Overlay -->
+<div id="diceOverlay" class="dice-overlay hidden">
+    <div class="dice-wrapper">
+        <div id="diceCube" class="dice show-1">
+            <div class="face face-1">1</div>
+            <div class="face face-2">2</div>
+            <div class="face face-3">3</div>
+            <div class="face face-4">4</div>
+            <div class="face face-5">5</div>
+            <div class="face face-6">6</div>
+        </div>
+    </div>
+</div>
+<!-- 🎴 事件彈窗（Event Modal） -->
+<div id="eventModal" class="event-modal hidden">
+  <div class="event-modal-backdrop"></div>
+  <div class="event-modal-card">
+    <div class="event-modal-header">
+      <span class="event-modal-tag">事件卡</span>
+      <button id="eventModalClose" class="event-modal-close" type="button">✕</button>
+    </div>
+    <div class="event-modal-body">
+      <div class="event-modal-topic" id="eventModalTopic">主題</div>
+      <div class="event-modal-title" id="eventModalTitle">事件標題 / 描述</div>
+
+      <div class="event-modal-row" id="eventModalImpactRow">
+        <span class="event-modal-label">影響值</span>
+        <span class="event-modal-impact" id="eventModalImpact">+0</span>
+      </div>
+
+      <div class="event-modal-row" id="eventModalLearnRow">
+        <span class="event-modal-label">教學重點</span>
+        <span class="event-modal-text" id="eventModalLearn"></span>
+      </div>
+
+      <div class="event-modal-row" id="eventModalAdviceRow">
+        <span class="event-modal-label">投資建議</span>
+        <span class="event-modal-text" id="eventModalAdvice"></span>
+      </div>
+
+      <div class="event-modal-row" id="eventModalTypeRow">
+        <span class="event-modal-label">投資人類型</span>
+        <span class="event-modal-pill" id="eventModalType"></span>
+      </div>
+
+      <div class="event-modal-row" id="eventModalFaceRow">
+        <span class="event-modal-label">教學面向</span>
+        <span class="event-modal-pill" id="eventModalFace"></span>
+      </div>
+
+      <div class="event-modal-row" id="eventModalMindRow">
+        <span class="event-modal-label">理財心法</span>
+        <span class="event-modal-text" id="eventModalMind"></span>
+      </div>
+    </div>
+
+    <div class="event-modal-footer">
+      <div class="event-modal-hint" id="eventModalHint">
+        👉 請在右側輸入槓桿後，按下「公布」計算實際影響。
+      </div>
+      <button id="eventModalOk" type="button" class="btn primary event-modal-ok">
+        好，我知道了
+      </button>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="./game.js"></script>
+</body>
+</html>
