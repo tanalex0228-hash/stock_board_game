@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <title>股票分析桌遊 - 遊戲說明</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="app">
+  <header class="app-header">
+    <h1>股票分析桌遊（Web 版）</h1>
+    <p class="subtitle">教學用桌遊（模擬投資風險，不連接真實金融帳戶）</p>
+  </header>
+
+  <main class="card" style="max-width: 900px; margin: 0 auto;">
+    <h2 class="panel-title">遊戲大綱</h2>
+    <p>這是一款結合「股票分析」與「風險槓桿」概念的教學桌遊，透過擲骰子與事件卡，模擬投資決策過程。</p>
+
+    <h3>基本規則</h3>
+    <ul>
+      <li>玩家從 <strong>「準備出發」</strong> 格開始，依照骰子點數繞棋盤行進。</li>
+      <li>每格代表一個投資主題（技術面、基本面、總體經濟、風險事件等）。</li>
+      <li>一般格子會抽到事件，事件有「影響值」，再乘上玩家選擇的槓桿。</li>
+      <li>特殊格（如「人生機會」、「命也運也」…）會直接套用事件，不吃槓桿。</li>
+    </ul>
+
+    <h3>槓桿規則</h3>
+    <ul>
+      <li>輸入槓桿（預設範圍 -3 ~ 9，之後可在設定頁修改）。</li>
+      <li>實際現金變動 = 事件「影響值」 × 槓桿。</li>
+      <li>系統同時累積你的槓桿使用量，用來計算「風險調整後績效」。</li>
+    </ul>
+
+    <h3>勝負條件（預設，可在設定頁調整）</h3>
+    <ul>
+      <li>起始現金：30</li>
+      <li>現金 ＜ 0：出局</li>
+      <li>現金 ≥ 100：過關</li>
+    </ul>
+
+    <p style="margin-top: 12px;">
+      準備好了之後，先進入「遊戲設定」頁面，設定玩家人數與遊戲參數，再開始正式遊戲。
+    </p>
+
+    <div style="margin-top: 16px; text-align: right;">
+      <button onclick="window.location.href='game_setup.html'">
+        前往遊戲設定 →
+      </button>
+    </div>
+  </main>
+</div>
+</body>
+</html>
