@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <title>股票分析桌遊 - 遊戲設定</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="app">
+  <header class="app-header">
+    <h1>股票分析桌遊 - 遊戲設定</h1>
+    <p class="subtitle">設定玩家人數與基本遊戲參數，然後進入正式遊戲。</p>
+  </header>
+
+  <main class="card" style="max-width: 720px; margin: 0 auto;">
+    <h2 class="panel-title">基本參數</h2>
+
+    <form id="setupForm">
+      <div class="controls-row" style="flex-direction: column; gap: 8px;">
+        <label>
+          玩家人數（1~6）：
+          <input type="number" id="playersInput" min="1" max="6" value="3" />
+        </label>
+
+        <label>
+          起始現金：
+          <input type="number" id="initCashInput" value="30" />
+        </label>
+
+        <label>
+          過關現金門檻：
+          <input type="number" id="winCashInput" value="100" />
+        </label>
+
+        <label>
+          槓桿下限：
+          <input type="number" id="minLevInput" value="-3" />
+        </label>
+
+        <label>
+          槓桿上限：
+          <input type="number" id="maxLevInput" value="9" />
+        </label>
+
+        <label>
+          <input type="checkbox" id="useDiceAnim" checked />
+          啟用 3D 全螢幕骰子動畫
+        </label>
+
+        <label>
+          <input type="checkbox" id="useSound" checked />
+          啟用骰子音效
+        </label>
+      </div>
+
+      <div style="margin-top: 16px; text-align: right;">
+        <button type="button" onclick="window.location.href='game_intro.html'">
+          ← 回到說明
+        </button>
+        <button type="submit">
+          進入遊戲 →
+        </button>
+      </div>
+    </form>
+  </main>
+</div>
+
+<script>
+  const form = document.getElementById('setupForm');
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const settings = {
+      totalPlayers: Number(document.getElementById('playersInput').value) || 3,
+      initCash: Number(document.getElementById('initCashInput').value) || 30,
+      winCash: Number(document.getElementById('winCashInput').value) || 100,
+      minLev: Number(document.getElementById('minLevInput').value) || -3,
+      maxLev: Number(document.getElementById('maxLevInput').value) || 9,
+      useDiceAnimation: document.getElementById('useDiceAnim').checked,
+      useSound: document.getElementById('useSound').checked,
+    };
+
+    localStorage.setItem('stockGameSettings', JSON.stringify(settings));
+    window.location.href = 'index.html';
+  });
+</script>
+</body>
+</html>
